@@ -1,3 +1,6 @@
-spring:
+  spring:
   application:
     name: socketingestor
+
+  server:
+    port: 8080

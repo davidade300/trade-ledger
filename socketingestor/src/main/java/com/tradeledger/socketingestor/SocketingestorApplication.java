@@ -1,6 +1,5 @@
 package com.tradeledger.socketingestor;
 
-import com.tradeledger.socketingestor.connector.BinanceWebSocketConnector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

@@ -1,6 +1,3 @@
-Readme · MD
-Copy
-
 # trade-ledger
 
 Sistema de ingestão e processamento de dados de mercado em tempo real. Consome o WebSocket público da Binance, processa

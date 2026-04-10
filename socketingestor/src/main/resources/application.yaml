@@ -1,6 +1,15 @@
-  spring:
+spring:
   application:
     name: socketingestor
+  kafka:
+    bootstrap-servers: 'http://localhost:29092'
 
-  server:
-    port: 8080
+server:
+  port: 8080
+
+tradeledger:
+  config:
+    kafka:
+      server-url: 'http://localhost:29092'
+      topics:
+        market-data: 'trade.market-data'

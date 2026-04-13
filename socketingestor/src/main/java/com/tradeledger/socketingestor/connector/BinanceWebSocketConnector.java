@@ -5,6 +5,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.client.ReactorNettyWebSocketClient;
@@ -23,7 +25,10 @@ public class BinanceWebSocketConnector {
 
     private static final String URL = "wss://stream.binance.com:9443/ws/btcusdt@trade/bnbusdt@trade";
     private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
+    @Value("${tradeledger.config.kafka.topics.market-data}")
+    private String topic;
 
     /**
      * Conecta ao Websocket da Binance e publica as mensagens em uma particação do topico kafka
@@ -35,10 +40,11 @@ public class BinanceWebSocketConnector {
     public void ingest() {
         WebSocketClient ws = new ReactorNettyWebSocketClient();
         ws.execute(URI.create(URL), session -> session.receive().map(WebSocketMessage::getPayloadAsText)
-                        .doOnNext(json -> {
+                        .doOnNext(data -> {
                             try {
-                                MessageTitleRepresentation title = objectMapper.readValue(json, MessageTitleRepresentation.class);
-                                log.info("{}{}", title.symbol(), json);
+                                MessageTitleRepresentation title = objectMapper.readValue(data, MessageTitleRepresentation.class);
+                                kafkaTemplate.send(topic, title.symbol(), data);
+                                log.info("{}{}", title.symbol(), data);
                             } catch (Exception e) {
                                 log.error("An exception of type {} occured: {}", e.getClass(), e.getMessage());
                             }
@@ -46,7 +52,7 @@ public class BinanceWebSocketConnector {
                         .then())
                 .retryWhen(Retry.fixedDelay(Long.MAX_VALUE, Duration.ofSeconds(5))
                         .maxBackoff(Duration.ofMinutes(2))
-                        .doBeforeRetry(msg -> log.warn("Connection dropped, reconne attempt {}", msg.totalRetries())))
+                        .doBeforeRetry(msg -> log.warn("Connection dropped, reconnect attempt N {}", msg.totalRetries())))
                 .repeat()
                 .subscribe(null, e -> log.error("Fatal error occured in the connector: {} , {}", e.getClass(), e.getMessage()));
     }

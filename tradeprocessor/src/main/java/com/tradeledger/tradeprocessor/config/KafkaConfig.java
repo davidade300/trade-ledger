@@ -15,7 +15,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    @Value("${}")
+    @Value("${tradeledger.config.kafka.server-url}")
     private String KafkaServerUrl;
 
     @Bean

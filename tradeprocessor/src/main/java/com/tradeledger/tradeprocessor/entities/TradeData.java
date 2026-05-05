@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @MappedSuperclass
 public abstract class TradeData {
-    // TODO: se funcionar, incluir definicao (nome, etc) das colunas
+    // TODO: funciona, incluir definicao (nome, etc) das colunas
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,9 +19,9 @@ public abstract class TradeData {
     private String symbol;
     @Column
     private Long tradeId;
-    @Column
+    @Column(precision = 18, scale = 8)
     private BigDecimal price;
-    @Column
+    @Column(precision = 18, scale = 8)
     private BigDecimal quantity;
     @Column
     private Instant tradeTime;

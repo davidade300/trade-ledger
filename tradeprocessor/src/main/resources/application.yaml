@@ -16,6 +16,7 @@ spring:
       group-id: trade-processor-trade-data
       auto-offset-reset: earliest
 
+
 tradeledger:
   config:
     kafka:

@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "bnb_usdt")
-public class bnbUsdtData extends tradeData {
+@Table(name = "xrp_usdt")
+public class XrpUsdtData extends TradeData {
+    public XrpUsdtData() {
+    }
 }

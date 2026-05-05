@@ -5,5 +5,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "btc_usdt")
-public class BtcUsdtData extends tradeData {
+public class BtcUsdtData extends TradeData {
+    public BtcUsdtData() {
+    }
 }

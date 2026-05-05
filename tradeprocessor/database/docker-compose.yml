@@ -1,12 +1,15 @@
 services:
-  db:
-    image: postgres
-    restart: always
-    shm_size: 128mb
+  postgres:
+    image: postgres:18
+    restart: on-failure
+    volumes:
+      - postgres_data:/var/lib/postgresql
     environment:
-      POSTGRES_DB: trade_pairs
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-
+      POSTGRES_DB: trade_ledger
     ports:
       - "5432:5432"
+
+volumes:
+  postgres_data:

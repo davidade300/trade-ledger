@@ -1,6 +1,5 @@
 package com.tradeledger.socketingestor.connector;
 
-import com.tradeledger.socketingestor.representation.MessageTitleRepresentation;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.time.Duration;
 @Component
 public class BinanceWebSocketConnector {
 
-    private static final String URL = "wss://stream.binance.com:9443/ws/btcusdt@trade/bnbusdt@trade";
+    private static final String URL = "wss://stream.binance.com:9443/ws/btcusdt@trade/bnbusdt@trade/xrpusdt@trade";
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -42,9 +41,12 @@ public class BinanceWebSocketConnector {
         ws.execute(URI.create(URL), session -> session.receive().map(WebSocketMessage::getPayloadAsText)
                         .doOnNext(data -> {
                             try {
-                                MessageTitleRepresentation title = objectMapper.readValue(data, MessageTitleRepresentation.class);
-                                kafkaTemplate.send(topic, title.symbol(), data);
-                                log.info("{}{}", title.symbol(), data);
+
+//                                MessageTitleRepresentation title = objectMapper.readValue(data, MessageTitleRepresentation.class);
+                                kafkaTemplate.send(topic, data);
+//                                log.info("{}{}", title.symbol(), data);
+                                log.info(data);
+
                             } catch (Exception e) {
                                 log.error("An exception of type {} occured: {}", e.getClass(), e.getMessage());
                             }

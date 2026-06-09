@@ -2,7 +2,15 @@ spring:
   application:
     name: socketingestor
   kafka:
-    bootstrap-servers: 'http://localhost:29092'
+    bootstrap-servers: 'localhost:29092'
+    producer:
+      acks: "1"
+      retries: 1
+      properties:
+        max.in.flight.requests.per.connection: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 
 server:
   port: 8080
@@ -10,6 +18,5 @@ server:
 tradeledger:
   config:
     kafka:
-      server-url: 'http://localhost:29092'
       topics:
         market-data: 'trade.market-data'

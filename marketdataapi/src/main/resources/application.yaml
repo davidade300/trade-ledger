@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: marketdataapi
-
-  server:
-    port: 8082

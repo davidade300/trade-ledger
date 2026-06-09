@@ -23,15 +23,17 @@ public class TradeDataSubscriber {
 
     @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = {"${tradeledger.config.kafka.topics.market-data}"})
     public void receiveTradeData(String json) {
-        log.info("Iniciando subscricao");
         try {
             var data = objectMapper.readValue(json, TradeDataRepresentation.class);
-            log.info("\ntrade id:{}\nquantity: {}\ntrade pair: {}\nprice: {}", data.tradeId(), data.quantity(), data.symbol(), data.price());
             service.route(data);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
+
+//    @KafkaListener(groupId = "${spring.kafka.consumer.group-id}", topics = {"${tradeledger.config.kafka.topics.market-data}"})
+//    public void receiveTradeData(ConsumerRecord<String, String> record) {
+//    }
 }
 

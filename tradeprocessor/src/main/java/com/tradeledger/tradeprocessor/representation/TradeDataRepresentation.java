@@ -1,4 +1,4 @@
-package com.tradeledger.tradeprocessor.Subscriber.representation;
+package com.tradeledger.tradeprocessor.representation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@MappedSuperclass
-public abstract class TradeData {
-    // TODO: funciona, incluir definicao (nome, etc) das colunas
+@Entity
+@Table(name = "raw_trades")
+public class MarketTrade {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +29,11 @@ public abstract class TradeData {
     @Column
     private Boolean marketMaker;
 
-    public Long getId() {
-        return id;
+    public MarketTrade() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public String getType() {
